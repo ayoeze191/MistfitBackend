@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+from email.policy import default
 from pathlib import Path
 import os
 import environ
 import cloudinary 
+# import django_database_url
 import django_heroku
 
 # django_heroku.settings(locals())
@@ -113,6 +115,19 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+if os.getcwd == '/app':
+    DATABASES = {
+        'default': dj_database_url.config(default = 'postgres://localhost') 
+    }
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    STATIC_ROOT = 'staticfiles'
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'))
+ 
+
+
+
 
 
 
