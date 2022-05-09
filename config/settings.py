@@ -107,7 +107,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #         'PORT': '5432',
 #     }
 # }
-
+# 
 
 DATABASES = {
     'default': {
