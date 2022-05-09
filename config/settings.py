@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE' : 'django.db.backends.postgresql',
+        'ENGINE' : 'django.db.backends.postgresql_psycopg',
         'NAME': 'ECCOMERCE',
         'USER': 'postgres',
         'PASSWORD': '75739768jc',
