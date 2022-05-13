@@ -22,12 +22,13 @@ class AuthenticatedUserCart(APIView):
     authentication_classes = [Authentication]
     permission_classes = [IsAuthenticated]
     def get(self, request, pk):
-        order = ''
-        if Order.objects.get(buyer=request.user.customer, complete=False):
-            order = Order.objects.get(buyer = request.user.customer, complete = False)
-        else:
-            Order.objects.create(buyer=request.user.customer, complete = False)
-            order = Order.objects.get(buyer=request.user.customer, complete = False)
+        # order = ''
+        # if Order.objects.get(buyer=request.user.customer, complete=False):
+        #     order = Order.objects.get(buyer = request.user.customer, complete = False)
+        # else:
+        #     Order.objects.create(buyer=request.user.customer, complete = False)
+        #     order = Order.objects.get(buyer=request.user.customer, complete = False)
+        order, created = Order.objects.get_or_create(buyer = request.user.customer, complete = False)
         product = Product.objects.get(id = pk)
         
         orderItem, created = OrderItem.objects.get_or_create(order = order, product = product)
@@ -46,13 +47,15 @@ class AuthenticatedUserCart(APIView):
                 })
         
     def delete(self, request, pk):
-        order = ''
-        if Order.objects.get(buyer=request.user.customer, complete=False):
-           order = Order.objects.get(buyer=request.user.customer)
+        # order = ''
+        # if Order.objects.get(buyer=request.user.customer, complete=False):
+        #    order = Order.objects.get(buyer=request.user.customer)
 
-        else:
-               Order.objects.create(buyer=request.user.customer, complete = False)
-               order = Order.objects.get(buyer=request.user.customer, complete = False)
+        # else:
+        #        Order.objects.create(buyer=request.user.customer, complete = False)
+        #        order = Order.objects.get(buyer=request.user.customer, complete = False)
+        order, created = Order.objects.get_or_create(buyer = request.user.customer, complete = False)
+        product = Product.objects.get(id = pk)
 
         product = Product.objects.get(pk = pk)
         orderItem, created = OrderItem.objects.get_or_create(order = order, product = product)
