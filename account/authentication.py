@@ -49,7 +49,6 @@ class Authentication(BaseAuthentication):
 
         if BlackListedToken.objects.filter(refresh = token).exists():
             return None
-        
 
         exp = decoded_data["exp"]
         if datetime.now().timestamp() > exp:
