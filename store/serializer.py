@@ -22,7 +22,3 @@ class ProductSerializers(serializers.ModelSerializer):
         fields = ['id', 'name', 'category', 'description', 'stock_price', 'productimage']
         depth = 1
         
-    
-class SearchSerializer(serializers.Serializer):
-    based_on = serializers.CharField(required = False, allow_blank = True)
-    text =  serializers.CharField(required = False, allow_blank = True)
