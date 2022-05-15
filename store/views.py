@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from rest_framework import filters
-
 # Create your views here.
 from rest_framework.views import APIView    
 from rest_framework import generics
@@ -33,5 +32,6 @@ class ProductSearchView(generics.ListAPIView):
     queryset = Product.objects.all()
     filter_backends = [filters.SearchFilter]
     search_fields = ['^name']
+
 
 

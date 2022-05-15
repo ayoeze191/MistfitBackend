@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'account',
     'store',
     'Orders',
-    'cloudinary_storage'
+    'cloudinary_storage',
 ]
 AUTH_USER_MODEL = "account.CustomUser"
 

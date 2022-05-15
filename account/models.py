@@ -69,3 +69,7 @@ class Customer(models.Model):
 def create_user_contact(sender, instance, created, **kwargs):
     if created:
         Customer.objects.create(user=instance, name = instance.name)
+
+
+class BlackListedToken(models.Model):
+    refreshtoken = models.TextField()

@@ -3,7 +3,7 @@ from os import access
 from django.conf import settings
 import jwt
 from rest_framework.authentication import BaseAuthentication
-from account.models import CustomUser, Jwt
+from account.models import CustomUser, Jwt, BlackListedToken
 
 class Authentication(BaseAuthentication):
 
@@ -46,8 +46,12 @@ class Authentication(BaseAuthentication):
                 algorithms="HS256")
         except Exception:
             return None
-        exp = decoded_data["exp"]
 
+        if BlackListedToken.objects.filter(refresh = token).exists():
+            return None
+        
+
+        exp = decoded_data["exp"]
         if datetime.now().timestamp() > exp:
             return None
         return decoded_data

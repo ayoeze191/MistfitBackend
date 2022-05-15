@@ -13,7 +13,7 @@ class UserSerializer(serializers.Serializer):
     is_superuser = serializers.BooleanField()
     
 class LogOutTokenSerializers(serializers.Serializer):
-    access = serializers.CharField()
+    refresh = serializers.CharField()
 
 class RefreshTokenSerializers(serializers.Serializer):
     # access = serializers.CharField()
