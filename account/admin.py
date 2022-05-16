@@ -4,5 +4,5 @@ from django.contrib import admin
 
 from .models import Customer, CustomUser, BlackListedToken
 
-admin.site.register((Customer, CustomUser))
+admin.site.register((Customer, CustomUser, BlackListedToken))
 
