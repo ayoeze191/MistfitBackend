@@ -22,6 +22,7 @@ class AuthenticatedUserCart(APIView):
     authentication_classes = [Authentication]
     permission_classes = [IsAuthenticated]
     def get(self, request, pk):
+        
         # order = ''
         # if Order.objects.get(buyer=request.user.customer, complete=False):
         #     order = Order.objects.get(buyer = request.user.customer, complete = False)
