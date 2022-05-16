@@ -56,17 +56,16 @@ class LogoutView(APIView):
     def get(self, request):
         serializer = self.serializer_class(data = request.data)
         serializer.is_valid(raise_exception=True)
-        token = serializer.validated_data['access']
+        token = serializer.validated_data['refresh']
         try:
             Jwt.objects.get(access = serializer.validated_data['refresh'])
         except Jwt.DoesNotExist:
             return Response({"data": "invalid token"})
         else:
-            refresh_token = BlackListedToken(serializer.validated_data['refresh'])
+            refresh_token = BlackListedToken(refreshtoken = serializer.validated_data['refresh'])
             refresh_token.save()
             Jwt.objects.get(access=serializer.validated_data["refresh"]).delete()
             return Response({"logged out successfully"}, status=HTTP_200_OK)
-
 
 
 class UserApi(generics.RetrieveAPIView):
@@ -83,6 +82,7 @@ class RefreshTokenView(APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
+        print(serializer.validated_data['refresh'])
         try:
             active_jwt = Jwt.objects.get(refresh=serializer.validated_data["refresh"])
         except Jwt.DoesNotExist:
@@ -100,7 +100,7 @@ class RefreshTokenView(APIView):
         PersonSerializer = UserSerializer(active_jwt.user)
         return Response({
             'access': access, 'refresh': refresh, 'user': PersonSerializer.data, 'exp': exp 
-        }, status=HTTP_200_OK)
+        })
 
 
 class RegisterView(APIView):
