@@ -192,5 +192,11 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': env("CLOUDINARY_API_SECRET")
 }
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ayoeze191@gmail.com'
+EMAIL_HOST_PASSWORD = "75739768jc"
+
 
 django_heroku.settings(locals())

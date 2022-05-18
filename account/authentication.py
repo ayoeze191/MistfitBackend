@@ -27,7 +27,7 @@ class Authentication(BaseAuthentication):
     def validate_request(self, headers):
         authorization = headers.get("Authorization", None)
         # print(authorization[7:])
-        print(authorization)
+        
         if not authorization:
             return None
         token = headers["Authorization"][7:]
@@ -48,7 +48,8 @@ class Authentication(BaseAuthentication):
         except Exception:
             return None
 
-        if BlackListedToken.objects.filter(refresh = token).exists():
+        print(token)
+        if BlackListedToken.objects.filter(refreshtoken = token).exists():
             return None
 
         exp = decoded_data["exp"]

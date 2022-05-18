@@ -1,3 +1,4 @@
+from telnetlib import STATUS
 from wsgiref import validate
 from django.shortcuts import render
 import jwt
@@ -11,9 +12,9 @@ from django.contrib.auth import authenticate
 from django.conf import settings
 from rest_framework.response import Response
 from .serializer import LoginSerializer, UserSerializer, LogOutTokenSerializers, RefreshTokenSerializers, RegisterSerializer
-from .import authentication
-from account import serializer
 from .authentication import Authentication
+from account import serializer
+
 from rest_framework.status import HTTP_200_OK
 from rest_framework import permissions
 from .models import BlackListedToken
@@ -22,8 +23,11 @@ from .models import BlackListedToken
 def get_random(length):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 def get_access_token(payload):
-    return jwt.encode({'exp':datetime.now() + timedelta(seconds=60), **payload}, 
-    settings.SECRET_KEY, algorithm="HS256")
+    return jwt.encode(
+        {"exp":datetime.now() + timedelta(minutes=5), **payload}, 
+        settings.SECRET_KEY,
+         algorithm="HS256"
+         )
 
 def get_refresh_token():
     return jwt.encode(
@@ -31,16 +35,18 @@ def get_refresh_token():
          settings.SECRET_KEY, algorithm="HS256"
     )
 
-
 class LoginView(APIView):
     serializer_class = LoginSerializer
     def post(self, request):
-     
         serializer = self.serializer_class(data = request.data)
         serializer.is_valid(raise_exception=True)
         user = authenticate(username = serializer.validated_data['email'], password = serializer.validated_data['password'])
         if not user:
-            return Response({"invalid: username"}, status=400)
+            return Response(
+                data = {
+                    "error": "Invalid email or password"
+                }, status=400
+            )
         Jwt.objects.filter(user_id=user.id).delete()
         access = get_access_token({"user_id": user.id, "username": user.get_username()})
         exp = jwt.decode(access, settings.SECRET_KEY, algorithms="HS256" )['exp']
@@ -49,22 +55,22 @@ class LoginView(APIView):
         Jwt.objects.create(
             user_id = user.id, access=access, refresh=refresh
         )
-        return Response({'access': access, 'refresh': refresh, 'user': serializedUser.data, 'exp': exp})
+        return Response({'access': access, 'refresh': refresh, 'user': serializedUser.data, 'exp': exp}, status = 200)
 class LogoutView(APIView):
     serializer_class = LogOutTokenSerializers
-    permission_classes = [permissions.IsAuthenticated]
-    def get(self, request):
+    # permission_classes = [permissions.IsAuthenticated]
+    def post(self, request):
         serializer = self.serializer_class(data = request.data)
         serializer.is_valid(raise_exception=True)
         token = serializer.validated_data['refresh']
         try:
-            Jwt.objects.get(access = serializer.validated_data['refresh'])
+            Jwt.objects.get(refresh = serializer.validated_data['refresh'])
         except Jwt.DoesNotExist:
             return Response({"data": "invalid token"})
         else:
             refresh_token = BlackListedToken(refreshtoken = serializer.validated_data['refresh'])
             refresh_token.save()
-            Jwt.objects.get(access=serializer.validated_data["refresh"]).delete()
+            Jwt.objects.get(refresh=serializer.validated_data["refresh"]).delete()
             return Response({"logged out successfully"}, status=HTTP_200_OK)
 
 
@@ -87,9 +93,9 @@ class RefreshTokenView(APIView):
             active_jwt = Jwt.objects.get(refresh=serializer.validated_data["refresh"])
         except Jwt.DoesNotExist:
             return Response({"error": "refresh does not exist"}, status='404')
-        if not authentication.verify_token(serializer.validated_data['refresh']):
+        if not Authentication.verify_token(serializer.validated_data['refresh']):
             return Response({"error": "Token is invalid"})
-        refresh_token = BlackListedToken(serializer.validated_data['refresh'])
+        refresh_token = BlackListedToken(refreshtoken = serializer.validated_data['refresh'])
         refresh_token.save()
         access = get_access_token({"user_id": active_jwt.user.id})
         refresh = get_refresh_token()
@@ -108,11 +114,17 @@ class RegisterView(APIView):
     def post(self, request):
         serilizer = self.serializer_class(data=request.data)
         serilizer.is_valid(raise_exception=True)
-        if CustomUser.objects.filter(email = serilizer.validated_data['email']).exists():
-            return Response({"Email already Exist"})
         CustomUser.objects._create_(email = serilizer.validated_data['email'], password = serilizer.validated_data['password'], name = serilizer.validated_data['name'])
         user = Customer.objects.get(user__email = serilizer.validated_data['email'])
-        
         user.last_name = serilizer.validated_data['last_name']
         user.save()
-        return Response({"user succesfully created"}, status=HTTP_200_OK)
+        authenticated_user = authenticate(username = serilizer.validated_data['email'], password = serilizer.validated_data['password'])
+        Jwt.objects.filter(user_id=authenticated_user.id).delete()
+        access = get_access_token({"user_id": user.id, "username": authenticated_user.get_username()})
+        exp = jwt.decode(access, settings.SECRET_KEY, algorithms="HS256" )['exp']
+        refresh = get_refresh_token()
+        serializedUser = UserSerializer(authenticated_user)
+        Jwt.objects.create(
+            user_id = authenticated_user.id, access=access, refresh=refresh
+        )
+        return Response({"message": "user succesfully created", 'access': access, 'refresh': refresh, 'user': serializedUser.data, 'exp': exp}, status=HTTP_200_OK)

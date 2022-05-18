@@ -126,7 +126,7 @@ class ProcessOrder(APIView):
             
             d, created = Order.objects.get_or_create(buyer = customer, complete = False)
             order = Order.objects.get(buyer = customer, complete = False)
-            print(user_cart)
+           
             for i in user_cart:
                 product = Product.objects.get(id = i["product"]["id"])
                 order_item, created = OrderItem.objects.get_or_create(order = order, product = product, quantity = i['quantity'])
