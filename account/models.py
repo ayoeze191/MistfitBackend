@@ -60,9 +60,7 @@ class Customer(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)
     last_name = models.CharField(max_length=200, null=True, blank=True)
     phone_number = models.CharField(max_length=200, null=True, blank=True)
-    @final 
-    def __str__(self):
-        return self.name
+    
 
 
 @receiver(post_save, sender=CustomUser)
