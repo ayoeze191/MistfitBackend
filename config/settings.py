@@ -117,7 +117,7 @@ DATABASES = {
 }
 if os.getenv("DJANGO_ENV") == 'production':
     DATABASES = {
-    'default': dj_database_url.config(  default='postgresql://postgres:postgres@localhost:5432/mysite',        conn_max_age=600    )}
+    'default': dj_database_url.config(  default='postgresql://misfity_user:Nd9osdrRPtxS9EgrPnuJZWOJOo6PrDyD@dpg-csehkg68ii6s73948vl0-a.oregon-postgres.render.com/misfity',        conn_max_age=600    )}
 
 #     # DATABASES = {
 #     #     'default': dj_database_url.config(default = 'postgres://localhost') 
