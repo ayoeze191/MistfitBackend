@@ -124,7 +124,6 @@ if os.getenv("DJANGO_ENV") == 'production':
     STATIC_ROOT = 'staticfiles'
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'))
     DEBUG = False
- 
 
 
 
