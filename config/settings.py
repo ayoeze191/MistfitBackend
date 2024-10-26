@@ -8,7 +8,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
-"""
+""" 
 
 from email.policy import default
 from pathlib import Path
@@ -115,13 +115,12 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
-if os.getcwd == '/app':
+if os.getcwd() == '/app':
     DATABASES = {
         'default': dj_database_url.config(default = 'postgres://localhost') 
     }
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     STATIC_ROOT = 'staticfiles'
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'))
     DEBUG = False
@@ -181,20 +180,23 @@ MEDIA_URL = "/media/"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': env("CLOUDINARY_CLOUD_NAME"),
-    'API_KEY': env("CLOUDINARY_API_KEY"),
-    'API_SECRET': env("CLOUDINARY_API_SECRET")
+if os.getcwd() == '/app':
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': env("CLOUDINARY_CLOUD_NAME"),
+        'API_KEY': env("CLOUDINARY_API_KEY"),
+        'API_SECRET': env("CLOUDINARY_API_SECRET")
+    }
+else{
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 }
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-EMAIL_USE_TLS = True
+
+
+EMAIL_USE_TLS = True 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_PORT = 587 
 EMAIL_HOST_USER = 'ayoeze191@gmail.com'
 EMAIL_HOST_PASSWORD = "75739768jc"
 
