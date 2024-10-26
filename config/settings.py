@@ -115,15 +115,15 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-if os.getenv("DJANGO_ENV") == 'production':
-    # DATABASES = {
-    #     'default': dj_database_url.config(default = 'postgres://localhost') 
-    # }
-    # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    STATIC_ROOT = 'staticfiles'
-    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'))
-    DEBUG = False
+# if os.getenv("DJANGO_ENV") == 'production':
+#     # DATABASES = {
+#     #     'default': dj_database_url.config(default = 'postgres://localhost') 
+#     # }
+#     # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+#     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#     STATIC_ROOT = 'staticfiles'
+#     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'))
+#     DEBUG = False
 
 
 
