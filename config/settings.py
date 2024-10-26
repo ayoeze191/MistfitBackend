@@ -115,9 +115,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-if os.getenv("DJANGO_ENV") == 'production':
-    DATABASES = {
-    'default': dj_database_url.config(  default='postgresql://misfity_user:Nd9osdrRPtxS9EgrPnuJZWOJOo6PrDyD@dpg-csehkg68ii6s73948vl0-a/misfity',        conn_max_age=600    )}
+# if os.getenv("DJANGO_ENV") == 'production':
+#     DATABASES = {
+#     'default': dj_database_url.config(  default='postgresql://misfity_user:Nd9osdrRPtxS9EgrPnuJZWOJOo6PrDyD@dpg-csehkg68ii6s73948vl0-a/misfity',        conn_max_age=600    )}
 
 #     # DATABASES = {
 #     #     'default': dj_database_url.config(default = 'postgres://localhost') 
