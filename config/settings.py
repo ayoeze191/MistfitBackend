@@ -42,7 +42,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = (env("DEBUG") == "True")
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ["https://git.heroku.com/misfitbackend.git", "*"]
+# ALLOWED_HOSTS = ["https://git.heroku.com/misfitbackend.git", "*"]
 ALLOWED_HOSTS = ['https://misfit.onrender.com', '127.0.0.1', 'localhost']
 # Application definition
 
