@@ -187,9 +187,9 @@ if os.getcwd() == '/app':
         'API_KEY': env("CLOUDINARY_API_KEY"),
         'API_SECRET': env("CLOUDINARY_API_SECRET")
     }
-else{
+else:
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-}
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
