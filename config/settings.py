@@ -15,7 +15,7 @@ from pathlib import Path
 import os
 import environ
 import cloudinary 
-# import django_database_url
+import dj_database_url
 import django_heroku
 
 # django_heroku.settings(locals())
