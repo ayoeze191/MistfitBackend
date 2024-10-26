@@ -115,7 +115,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-if os.getcwd("DJANGO_ENV") == 'production':
+if os.getenv("DJANGO_ENV") == 'production':
     DATABASES = {
         'default': dj_database_url.config(default = 'postgres://localhost') 
     }
@@ -180,7 +180,7 @@ MEDIA_URL = "/media/"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-if os.getcwd("DJANGO_ENV") == 'production':
+if os.getenv("DJANGO_ENV") == 'production':
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': env("CLOUDINARY_CLOUD_NAME"),
